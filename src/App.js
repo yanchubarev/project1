@@ -1,43 +1,31 @@
-import React from 'react';
-import { useState } from 'react';
+  
+import React, { useState } from 'react';
 import './App.css';
-
+import { AuthProvider } from './elements/auth';
+import Header from './elements/header';
 import LoginPage from './pages/login';
 import RegisterPage from './pages/register';
 import MapPage from './pages/map';
 import ProfilePage from './pages/profile';
 
-const pages = ['login', 'register', 'map', 'profile'];
-
 const App = () => {
   const [page, setPage] = useState('login');
-  const changePage = page => {
-    setPage(page);
-  }
-  return(
-    <div className="app">
-      <header>
-        <ul className="pageNav">
-          {pages.map(page => (
-            <li onClick={() => setPage(page)} key={page}>
-              {page}
-            </li>
-          ))}
-        </ul>
-      </header>
 
-      <section className="pageContent">
+  return (
+    <AuthProvider>
+      <div className="app">
+        <Header setPage={setPage} />
         {
           {
-            login: <LoginPage toPage={changePage} />,
-            register: <RegisterPage toPage={changePage} />,
+            login: <LoginPage setPage={setPage} />,
+            register: <RegisterPage setPage={setPage} />,
             map: <MapPage />,
             profile: <ProfilePage />
           }[page]
         }
-      </section>
-    </div>
+      </div>
+    </AuthProvider>
   );
-}
+};
 
 export default App;

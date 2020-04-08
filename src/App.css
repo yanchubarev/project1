@@ -1,39 +1,103 @@
-.app header {
+.app {
+  width: 100vw;
+  height: 100vh;
+  background: url('./img/bg.jpg') center center no-repeat;
+  background-size: cover;
+}
+.link {
+  text-decoration: underline;
+  color: blue;
+  color: pointer;
+}
+header {
   position: fixed;
   left: 0;
   top: 0;
   width: 100%;
   background: #fff;
-  box-shadow: 0px 0px 5px 0 rgba(0,0,0,0.5);
+  padding-left: 24px;
+  padding-right: 24px;
+  box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12);
+  box-sizing: border-box;
 }
 
-.app header ul {
-  margin: 0;
-  padding: 0;
+header .headerContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  height: 65px;
 }
 
-.app header ul li {
-  display: inline-block;
-  color: #000;
-  cursor: pointer;
-  text-transform: uppercase;
-  padding: 20px;
-  font-weight: bold;
+header .menu {
+  display: flex;
+  align-items: center;
 }
 
-.app .pageContent {
-  padding: 60px 20px 40px 20px; 
+header .menu button {
+  margin-right: 10px;
 }
 
-.form label {
-  display: block;
-  padding-top: 20px;
-  padding-bottom: 6px;
+header .menu button:last-child {
+  margin-right: 0;
 }
 
-.form [type='submit'] {
-  margin-top: 20px;
-  width: 173px;
-  padding: 20px;
+.page {
+  width: 100%;
+  height: 100%;
 }
 
+.pageContent {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.whiteDiv {
+  background: #fff;
+  border-radius: 3px;
+  padding: 35px 50px;
+}
+.form label + .MuiInput-formControl {
+  margin-top: 30px;
+}
+.form .line {
+  margin-bottom: 30px;
+}
+
+.form .line [class*='MuiTextField'] {
+  width: 100%;
+}
+ 
+.form button[type='submit'] {
+  background: #ffc617;
+}
+
+.logoWrap {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 100%;
+}
+
+.map {
+  position: absolute;
+  left: 0;
+  top: 65px;
+  right: 0;
+  bottom: 0;
+}
+
+.map .mapboxgl-map {
+  height: 100%;
+}
+
+.textRight {
+  text-align: right;
+}
+
+.textCenter {
+  text-align: center;
+}
+.textLeft {
+  text-align: center;
+}

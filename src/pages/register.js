@@ -1,78 +1,113 @@
 import React from 'react';
-import { useState } from 'react';
+import PropTypes from 'prop-types';
+import Container from '@material-ui/core/container';
+import Grid from '@material-ui/core/grid';
+import TextField from '@material-ui/core/textfield';
+import Button from '@material-ui/core/button';
+import { Logo } from 'loft-taxi-mui-theme';
 
-const RegisterPage = (props) => {
-  const [userInfo, setInfo] = useState('');
-  const tempvalues = {
-    loginInput:'',
-    passwordInput:'',
-    nameInput:'',
-    surnameInput:''
+class RegisterPage extends React.Component {
+  state = {
+    loginInput: '',
+    passwordInput: '',
+    nameInput: '',
+    surnameInput: ''
   };
-  const handleSubmit = (e) => {
+
+  handleSubmit = e => {
     e.preventDefault();
-    props.toPage('map');
+
+    const { loginInput, passwordInput, nameInput, surnameInput } = this.state;
+
+    
   };
 
-  const handleChange = e => {
-    tempvalues[e.target.name]=e.target.value;
-    setInfo(tempvalues);
+  handleChange = e => {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
   };
 
-    const { loginInput, passwordInput, nameInput, surnameInput } = {userInfo};
+  render = () => {
+    const { loginInput, passwordInput, nameInput, surnameInput } = this.state;
+    const { setPage } = this.props;
 
     return (
-      <div className="page pageRegister">
-        <h1>Регистрация</h1>
-
-        <form onSubmit={handleSubmit} className="form">
-          <div>
-            <label>Имя: </label>
-            <input
-              type="text"
-              name="nameInput"
-              value={nameInput}
-              onChange={handleChange}
-            />
-          </div>
-
-          <div>
-            <label>Фамилия: </label>
-            <input
-              type="text"
-              name="surnameInput"
-              value={surnameInput}
-              onChange={handleChange}
-            />
-          </div>
-
-          <div>
-            <label>Логин: </label>
-            <input
-              type="email"
-              name="loginInput"
-              value={loginInput}
-              onChange={handleChange}
-            />
-          </div>
-
-          <div>
-            <label>Пароль: </label>
-            <input
-              type="password"
-              name="passwordInput"
-              value={passwordInput}
-              onChange={handleChange}
-            />
-          </div>
-
-          <div>
-            <input type="submit" value="Регистрация" />
-          </div>
-        </form>
-
-      </div>
+      <section className="page">
+        <div className="pageContent">
+          <Container maxWidth="md">
+            <Grid container spacing={3}>
+              <Grid item xs={6}>
+                <div className="logoWrap">
+                  <Logo />
+                </div>
+              </Grid>
+              <Grid item xs={6}>
+                <div className="whiteDiv">
+                  <h2>Регистрация</h2>
+                  <p>
+                    Уже зарегистрирован?{' '}
+                    <span className="link" onClick={() => setPage('login')}>
+                      Войти
+                    </span>
+                  </p>
+                  <form onSubmit={this.handleSubmit} className="form">
+                    <div className="line">
+                      <TextField
+                        label="Электронная почта"
+                        type="email"
+                        name="loginInput"
+                        value={loginInput}
+                        onChange={this.handleChange}
+                        required
+                      />
+                    </div>
+                    <div className="line">
+                      <TextField
+                        label="Имя"
+                        type="text"
+                        name="nameInput"
+                        value={nameInput}
+                        onChange={this.handleChange}
+                        required
+                      />
+                      </div>
+                      <div className="line">
+                      <TextField
+                        label="Фамилия"
+                        type="text"
+                        name="surnameInput"
+                        value={surnameInput}
+                        onChange={this.handleChange}
+                        required
+                      />
+                    </div>
+                    <div className="line">
+                      <TextField
+                        label="Пароль"
+                        type="password"
+                        name="passwordInput"
+                        value={passwordInput}
+                        onChange={this.handleChange}
+                        required
+                      />
+                    </div>
+                    <div className="line textRight">
+                      <Button type="submit">Зарегистрироваться</Button>
+                    </div>
+                  </form>
+                </div>
+              </Grid>
+            </Grid>
+          </Container>
+        </div>
+      </section>
     );
+  };
 }
+
+RegisterPage.propTypes = {
+  setPage: PropTypes.func.isRequired
+};
 
 export default RegisterPage;
