@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { useDispatch,useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { logOutUser } from '../modules/user';
@@ -10,7 +10,13 @@ import { Logo } from 'loft-taxi-mui-theme';
 const pages = [{name: 'Логин', url: 'login'},{name: 'Регистрация', url: 'register'},{name: 'Карта', url: 'map'},{name: 'Профиль', url: 'profile'}];
 
 
-const Header = ({ logOutUser, isAuthed }) => {
+const Header = () => {
+   
+  const dispatch = useDispatch();
+  const isAuthed = useSelector(state => state.user.isAuthed);
+  const handleClick = () => {
+    dispatch(logOutUser);
+  }
   if (isAuthed) {
     return (
       <header>
@@ -25,7 +31,7 @@ const Header = ({ logOutUser, isAuthed }) => {
               <Link to="/profile">
                 <Button>Профиль</Button>
               </Link>
-              <Button onClick={logOutUser}>Выход</Button>
+              <Button onClick={handleClick}>Выход</Button>
             </div>
           </div>
       </header>
@@ -33,12 +39,5 @@ const Header = ({ logOutUser, isAuthed }) => {
   } else return null;
 };
 
-const mapStateToProps = state => ({
-  isAuthed: state.user.isAuthed
-});
 
-const mapDispatchToProps = {
-  logOutUser
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default Header;
