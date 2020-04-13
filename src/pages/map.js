@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import MapboxGl from 'mapbox-gl';
-import '../mapbox-gl.css';
+import '../css/mapbox-gl.css';
 
 const MapPage = () => {
   const map = useRef(null);

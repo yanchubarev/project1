@@ -1,36 +1,49 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { AuthConsumer } from '../elements/auth';
+import React, { useState,useEffect } from 'react';
+import { connect } from 'react-redux';
+import { Link,useHistory } from 'react-router-dom';
+
+import {useSelector, useDispatch} from 'react-redux'
+import { signInUser } from '../modules/user';
 import Container from '@material-ui/core/container';
 import Grid from '@material-ui/core/grid';
 import TextField from '@material-ui/core/textfield';
 import Button from '@material-ui/core/button';
 import { Logo } from 'loft-taxi-mui-theme';
 
-class LoginPage extends React.Component {
-  state = { loginInput: '', passwordInput: '' };
-
-  handleSubmit = e => {
+const LoginPage = () => {
+  const [loginInput, setLoginInput] = useState('');
+  const [passwordInput, setPasswordInput] = useState('');
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const isAuthed = useSelector(state => state.user.isAuthed);
+  const error = useSelector(state => state.user.error);
+  const handleSubmit = e => {
     e.preventDefault();
 
-    const { loginInput, passwordInput } = this.state;
-
     if (loginInput && passwordInput) {
-      this.props.setPage('map');
+      dispatch(signInUser({
+        email: loginInput,
+        password: passwordInput
+      }));
+      
     }
   };
-
-  handleChange = e => {
-    this.setState({
-      [e.target.name]: e.target.value
-    });
+ 
+  const handleChange = e => {
+    switch (e.target.name) {
+      case 'loginInput':
+        setLoginInput(e.target.value);
+        break;
+      case 'passwordInput':
+        setPasswordInput(e.target.value);
+        break;
+      default:
+    }
   };
-
-  render = () => {
-    const { loginInput, passwordInput } = this.state;
-    const { setPage } = this.props;
-
-    return (
+  useEffect(() => { 
+    if (isAuthed) {history.push('/map')} 
+  }, [isAuthed])
+  return (
       <section className="page">
         <div className="pageContent">
           <Container maxWidth="md">
@@ -43,23 +56,22 @@ class LoginPage extends React.Component {
               <Grid item xs={6}>
                 <div className="whiteDiv">
                   <h2>Войти</h2>
+                  {isAuthed ? ( <p>lol</p>) : (
+                  <>
                   <p>
                     Новый пользователь?{' '}
-                    <span
-                      className="link"
-                      onClick={() => setPage('register')}
-                    >
-                      Зарегистрируйтесь
-                    </span>
+                    <Link to="/register" className="link">
+                        Зарегистрируйтесь
+                      </Link>
                   </p>
-                  <form onSubmit={this.handleSubmit} className="form">
+                  <form onSubmit={handleSubmit} className="form">
                     <div className="line">
                       <TextField
                         label="Логин"
                         type="email"
                         name="loginInput"
                         value={loginInput}
-                        onChange={this.handleChange}
+                        onChange={handleChange}
                         required
                       />
                     </div>
@@ -69,27 +81,23 @@ class LoginPage extends React.Component {
                         type="password"
                         name="passwordInput"
                         value={passwordInput}
-                        onChange={this.handleChange}
+                        onChange={handleChange}
                         required
                       />
                     </div>
                     <div className="line textRight">
-                      <AuthConsumer>
-                        {({ login }) => (
                           <Button
                             type="submit"
-                            onClick={() => {
-                              loginInput &&
-                                passwordInput &&
-                                login(loginInput, passwordInput);
-                            }}
                           >
                             Войти
                           </Button>
-                        )}
-                      </AuthConsumer>
                     </div>
+                    <div className="line">
+                        <span className="error">{error}</span>
+                      </div>
                   </form>
+                  </>
+                )}
                 </div>
               </Grid>
             </Grid>
@@ -98,10 +106,6 @@ class LoginPage extends React.Component {
       </section>
     );
   };
-}
 
-LoginPage.propTypes = {
-  setPage: PropTypes.func.isRequired
-};
-
+  
 export default LoginPage;

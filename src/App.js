@@ -1,31 +1,37 @@
   
-import React, { useState } from 'react';
-import './App.css';
-import { AuthProvider } from './elements/auth';
-import Header from './elements/header';
+import React,{ useState,useEffect } from 'react';
+import { Switch, Route, Redirect } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import PrivateRoute from './components/privateRoute';
+
+import './css/App.css';
+
+import Header from './components/header';
 import LoginPage from './pages/login';
 import RegisterPage from './pages/register';
 import MapPage from './pages/map';
 import ProfilePage from './pages/profile';
 
 const App = () => {
-  const [page, setPage] = useState('login');
-
+  const isAuthed = useSelector(state => state.user.isAuthed);
   return (
-    <AuthProvider>
-      <div className="app">
-        <Header setPage={setPage} />
-        {
-          {
-            login: <LoginPage setPage={setPage} />,
-            register: <RegisterPage setPage={setPage} />,
-            map: <MapPage />,
-            profile: <ProfilePage />
-          }[page]
-        }
-      </div>
-    </AuthProvider>
+    <div className="app">
+      <Header />
+      <Switch>
+        <Route path="/" component={LoginPage} exact />
+        <Route path="/register" component={RegisterPage} />
+        <PrivateRoute path="/map" component={MapPage} isAuthed={isAuthed} />
+        <PrivateRoute
+          path="/profile"
+          component={ProfilePage}
+          isAuthed={isAuthed}
+        />
+        <Redirect to="/" />
+      </Switch>
+    </div>
   );
 };
+
+
 
 export default App;

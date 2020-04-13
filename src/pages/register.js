@@ -1,38 +1,62 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useState,useEffect } from 'react';
+import { useDispatch,useSelector } from 'react-redux';
+import { Link,useHistory } from 'react-router-dom';
+
+import { signUpUser } from '../modules/user';
+
 import Container from '@material-ui/core/container';
 import Grid from '@material-ui/core/grid';
 import TextField from '@material-ui/core/textfield';
 import Button from '@material-ui/core/button';
 import { Logo } from 'loft-taxi-mui-theme';
 
-class RegisterPage extends React.Component {
-  state = {
-    loginInput: '',
-    passwordInput: '',
-    nameInput: '',
-    surnameInput: ''
-  };
+const RegisterPage = () => {
+  const [loginInput, setLoginInput] = useState('');
+  const [passwordInput, setPasswordInput] = useState('');
+  const [nameInput, setNameInput] = useState('');
+  const [surnameInput, setSurnameInput] = useState('');
 
-  handleSubmit = e => {
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const isAuthed = useSelector(state => state.user.isAuthed);
+  const error = useSelector(state => state.user.error);
+
+  const handleSubmit = e => {
     e.preventDefault();
 
-    const { loginInput, passwordInput, nameInput, surnameInput } = this.state;
-
-    
+    if (loginInput && passwordInput) {
+      dispatch(signUpUser({
+        email: loginInput,
+        password: passwordInput,
+        name: nameInput,
+        surname: surnameInput
+      }));
+    }
   };
 
-  handleChange = e => {
-    this.setState({
-      [e.target.name]: e.target.value
-    });
+  useEffect(() => { 
+    if (isAuthed) {history.push('/map')} 
+  }, [isAuthed]);
+
+  const handleChange = e => {
+    switch (e.target.name) {
+      case 'loginInput':
+        setLoginInput(e.target.value);
+        break;
+      case 'passwordInput':
+        setPasswordInput(e.target.value);
+        break;
+      case 'nameInput':
+        setNameInput(e.target.value);
+        break;
+      case 'surnameInput':
+        setSurnameInput(e.target.value);
+        break;
+      default:
+    }
   };
-
-  render = () => {
-    const { loginInput, passwordInput, nameInput, surnameInput } = this.state;
-    const { setPage } = this.props;
-
-    return (
+  
+  return (
       <section className="page">
         <div className="pageContent">
           <Container maxWidth="md">
@@ -45,20 +69,24 @@ class RegisterPage extends React.Component {
               <Grid item xs={6}>
                 <div className="whiteDiv">
                   <h2>Регистрация</h2>
-                  <p>
-                    Уже зарегистрирован?{' '}
-                    <span className="link" onClick={() => setPage('login')}>
-                      Войти
-                    </span>
-                  </p>
-                  <form onSubmit={this.handleSubmit} className="form">
+                  {isAuthed ? (
+                   <p>lol</p>
+                ) : (
+                  <>
+                    <p>
+                      Уже зарегистрирован?{' '}
+                      <Link to="/" className="link">
+                        Войти
+                      </Link>
+                    </p>
+                  <form onSubmit={handleSubmit} className="form">
                     <div className="line">
                       <TextField
                         label="Электронная почта"
                         type="email"
                         name="loginInput"
                         value={loginInput}
-                        onChange={this.handleChange}
+                        onChange={handleChange}
                         required
                       />
                     </div>
@@ -68,7 +96,7 @@ class RegisterPage extends React.Component {
                         type="text"
                         name="nameInput"
                         value={nameInput}
-                        onChange={this.handleChange}
+                        onChange={handleChange}
                         required
                       />
                       </div>
@@ -78,7 +106,7 @@ class RegisterPage extends React.Component {
                         type="text"
                         name="surnameInput"
                         value={surnameInput}
-                        onChange={this.handleChange}
+                        onChange={handleChange}
                         required
                       />
                     </div>
@@ -88,7 +116,7 @@ class RegisterPage extends React.Component {
                         type="password"
                         name="passwordInput"
                         value={passwordInput}
-                        onChange={this.handleChange}
+                        onChange={handleChange}
                         required
                       />
                     </div>
@@ -96,6 +124,8 @@ class RegisterPage extends React.Component {
                       <Button type="submit">Зарегистрироваться</Button>
                     </div>
                   </form>
+                  </>
+                  )}
                 </div>
               </Grid>
             </Grid>
@@ -104,10 +134,6 @@ class RegisterPage extends React.Component {
       </section>
     );
   };
-}
 
-RegisterPage.propTypes = {
-  setPage: PropTypes.func.isRequired
-};
 
 export default RegisterPage;
