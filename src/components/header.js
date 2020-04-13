@@ -11,11 +11,10 @@ const pages = [{name: 'Логин', url: 'login'},{name: 'Регистрация
 
 
 const Header = () => {
-   
   const dispatch = useDispatch();
   const isAuthed = useSelector(state => state.user.isAuthed);
-  const handleClick = () => {
-    dispatch(logOutUser);
+  const handleclick = e =>{
+    dispatch(logOutUser());
   }
   if (isAuthed) {
     return (
@@ -31,7 +30,7 @@ const Header = () => {
               <Link to="/profile">
                 <Button>Профиль</Button>
               </Link>
-              <Button onClick={handleClick}>Выход</Button>
+              <Button onClick={handleclick}>Выход</Button>
             </div>
           </div>
       </header>
