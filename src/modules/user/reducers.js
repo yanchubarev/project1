@@ -8,7 +8,7 @@ import {
   signInUserSuccess,
   signInUserError,
   logOutUser,
-  updateProfileUser,
+  updateProfileUser, 
   updateProfileUserSuccess,
   updateProfileUserError,
   loadProfileUser,
@@ -34,16 +34,35 @@ const token = handleActions(
   null
 );
 
-const error = handleActions(
+const card = handleActions(
+  {
+    [loadProfileUserSuccess]: (_state, action) => action.payload
+  },
+  {}
+);
+
+const errorSignUp = handleActions(
   {
     [signUpUser]: () => '',
     [signUpUserSuccess]: (_state, action) => action.payload.error,
     [signUpUserError]: (_state, action) =>
-      action.payload.statusText || 'Connection error',
+      action.payload.statusText || 'Connection error'
+  },
+  ''
+);
+
+const errorSignIn = handleActions(
+  {
     [signInUser]: () => '',
     [signInUserSuccess]: (_state, action) => action.payload.error,
     [signInUserError]: (_state, action) =>
-      action.payload.statusText || 'Connection error',
+      action.payload.statusText || 'Connection error'
+  },
+  ''
+);
+
+const errorProfile = handleActions(
+  {
     [updateProfileUser]: () => '',
     [updateProfileUserSuccess]: (_state, action) => action.payload.error,
     [updateProfileUserError]: (_state, action) =>
@@ -56,16 +75,41 @@ const error = handleActions(
   ''
 );
 
-const card = handleActions(
+const loadingSignUp = handleActions(
   {
-    [loadProfileUserSuccess]: (_state, action) => action.payload
+    [signUpUser]: () => true,
+    [signUpUserSuccess]: () => false,
+    [signUpUserError]: () => false
   },
-  {}
+  false
+);
+
+const loadingSignIn = handleActions(
+  {
+    [signInUser]: () => true,
+    [signInUserSuccess]: () => false,
+    [signInUserError]: () => false
+  },
+  false
+);
+
+const loadingProfile = handleActions(
+  {
+    [loadProfileUser]: () => true,
+    [loadProfileUserSuccess]: () => false,
+    [loadProfileUserError]: () => false
+  },
+  false
 );
 
 export default combineReducers({
   isAuthed,
   token,
   card,
-  error
+  errorSignUp,
+  errorSignIn,
+  errorProfile,
+  loadingSignUp,
+  loadingSignIn,
+  loadingProfile
 });

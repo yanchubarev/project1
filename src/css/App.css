@@ -101,3 +101,30 @@ header .menu button:last-child {
 .textLeft {
   text-align: center;
 }
+.mapContainer {
+  position: absolute;
+  left: 0;
+  top: 65px;
+  right: 0;
+  bottom: 0;
+}
+.mapContainer .mapboxgl-map {
+  height: 100%;
+}
+.routeSelect {
+  position: absolute;
+  left: 40px;
+  top: 105px;
+  max-width: 400px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.routeSelect .MuiInputLabel-root {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.routeSelect .MuiInput-root,.routeSelect .MuiButton-text {
+  width: 100%;
+}
